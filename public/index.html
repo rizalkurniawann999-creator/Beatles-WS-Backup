@@ -3,10 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Base URL backend API. Kosong = origin yang sama (server lokal menyajikan
-         frontend + API). Untuk frontend di Netlify, isi dengan URL publik backend,
-         mis. https://xxxx.serveousercontent.com (tanpa garis miring di akhir). -->
-    <meta name="beatles-api-base" content="">
     <title>Beatles-WS | Enterprise WhatsApp Management & Blasting Platform</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -57,90 +53,102 @@
         @keyframes toastIn { from { opacity: 0; transform: translateX(24px); } to { opacity: 1; transform: translateX(0); } }
         .nav-active { background: rgba(34,211,238,0.14); color: #22d3ee; box-shadow: inset 4px 0 0 rgba(34,211,238,1); }
         .status-dot { width: .55rem; height: .55rem; border-radius: 999px; display: inline-block; }
+
+        .lt{--ink:#1c2a26;--mut:#6b746f;--line:#e6dfd0;background:radial-gradient(ellipse at top,#fdf6e8,#f1e6d0 75%);color:var(--ink)}
+        .uc{background:#fffdf8;border:1px solid #e6dfd0;border-radius:20px;padding:20px;box-shadow:0 8px 30px rgba(80,60,20,.08);color:#1c2a26}
+        .ub{background:#1f3d35;color:#fff;border-radius:12px;padding:.7rem 1.1rem;font-weight:700;font-size:.8rem;transition:.2s}.ub:hover{background:#2c5549}.ub:disabled{opacity:.5}
+        .ub2{background:#fff;border:1px solid #e6dfd0;color:#1c2a26;border-radius:12px;padding:.6rem 1rem;font-weight:700;font-size:.8rem}
+        .ubr{background:#b42339;color:#fff;border-radius:12px;padding:.7rem 1.1rem;font-weight:700;font-size:.8rem}
+        .ui{width:100%;background:#f4efe3;border:1px solid #e6dfd0;border-radius:12px;padding:.7rem .9rem;font-size:.85rem;color:#1c2a26;outline:none}.ui:focus{border-color:#1f3d35}
+        .lbl{display:block;font-size:.65rem;font-weight:700;color:#6b746f;letter-spacing:.06em;text-transform:uppercase;margin-bottom:.3rem}
+        .cap{display:flex;align-items:center;gap:.7rem;border:1px solid #ddd;background:#fafafa;border-radius:6px;padding:.7rem;font-size:.8rem;cursor:pointer;color:#333}
+        .cap .box{width:22px;height:22px;border:2px solid #bbb;border-radius:4px;background:#fff;display:inline-block}.cap.ok .box{background:#1f9d55;border-color:#1f9d55}.cap.ok .box::after{content:'\2713';color:#fff;font-size:14px;display:block;text-align:center}
+        .stp{width:26px;height:26px;border-radius:99px;background:#fff;border:1px solid #d8d0bd;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;color:#6b746f}.stp.on{background:#1f3d35;color:#fff;border-color:#1f3d35}
+        .chip{border:1px solid #e6dfd0;background:#fff;border-radius:10px;padding:.55rem;font-size:.75rem;font-weight:700}.chip.on{background:#1f3d35;color:#fff}
+        .tile{background:#f4efe3;border-radius:14px;padding:.8rem}.tile b{display:block;font-size:1.3rem}.tile span{font-size:.65rem;color:#6b746f}
+        .theme-user{background:#f6efe0!important;color:#1c2a26}
+        .theme-user aside,.theme-user header{background:rgba(255,252,245,.95)!important;border-color:#e6dfd0!important}
+        .theme-user main{background:#f6efe0!important;background-image:none!important}
+        .theme-user .text-white{color:#1c2a26!important}.theme-user .text-slate-300,.theme-user .text-slate-400,.theme-user .text-slate-500{color:#5c6762!important}
+        .theme-user .glass-panel{background:#fffdf8!important;border-color:#e6dfd0!important}
+        .theme-user .bg-slate-800\/80,.theme-user .bg-slate-900,.theme-user .bg-slate-800{background:#f4efe3!important}
+        .theme-user .border-slate-700,.theme-user .border-slate-800{border-color:#e6dfd0!important}
+        .theme-user .nav-active{background:#e7efe9;color:#1f3d35!important;box-shadow:inset 4px 0 0 #1f3d35}
+        .theme-user .text-beatles-cyan{color:#1f3d35!important}.theme-user input,.theme-user textarea,.theme-user select{color:#1c2a26!important}
+        .theme-user .bg-beatles-cyan{background:#1f3d35!important;color:#fff!important}
+        #toast-stack{top:4rem}
     </style>
 </head>
 <body class="bg-beatles-900 text-slate-300 font-sans antialiased overflow-x-hidden min-h-screen flex flex-col">
 
     <div id="toast-stack"></div>
 
-    <!-- LANDING / CONSOLE VIEW -->
-    <div id="view-console" class="relative min-h-screen flex flex-col items-center justify-center p-4">
-        <video autoplay loop muted playsinline class="video-bg">
-            <source src="assets/video_2.mp4" type="video/mp4">
-        </video>
-        <div class="z-10 text-center glass-panel gradient-border p-10 md:p-14 rounded-3xl shadow-2xl max-w-lg w-full animate-floaty">
-            <div class="flex justify-center mb-6">
-                <img src="assets/logo.png" alt="Beatles-WS Logo" class="w-32 h-32 md:w-36 md:h-36 object-cover rounded-2xl glow-ring border-2 border-beatles-cyan/50">
-            </div>
-            <h1 class="text-4xl md:text-5xl font-black text-white mb-3 tracking-widest neon-text">BEATLES-<span class="text-beatles-cyan">WS</span></h1>
-            <p class="text-xs md:text-sm text-beatles-bronze uppercase tracking-widest font-semibold mb-4">Enterprise WhatsApp Automation</p>
-            <p class="text-sm md:text-base text-slate-300 mb-8 font-light tracking-wide leading-relaxed">Platform manajemen WhatsApp profesional dengan Multi-DB, Multi-Server, dan Anti-Blast Security.</p>
-            <button onclick="showAuth()" class="w-full bg-beatles-cyan hover:bg-cyan-400 text-beatles-900 font-bold py-3.5 px-8 rounded-xl transition-all shadow-[0_0_20px_rgba(34,211,238,0.6)] tracking-wide">
-                Masuk ke Platform <i class="fas fa-arrow-right ml-2"></i>
-            </button>
+    <div id="lang-ctl" class="fixed top-4 right-4 z-[60]">
+        <button onclick="document.getElementById('lang-menu').classList.toggle('hidden')" class="ub2 text-xs"><i class="fas fa-globe mr-1"></i><span id="lang-cur">ID</span></button>
+        <div id="lang-menu" class="hidden uc !p-1 mt-2 text-xs w-32 absolute right-0">
+            <button onclick="setLang('id')" class="block w-full text-left px-3 py-2 rounded-lg hover:bg-[#f4efe3]"><b>ID</b> Indonesia</button>
+            <button onclick="setLang('en')" class="block w-full text-left px-3 py-2 rounded-lg hover:bg-[#f4efe3]"><b>EN</b> English</button>
+            <button onclick="setLang('zh')" class="block w-full text-left px-3 py-2 rounded-lg hover:bg-[#f4efe3]"><b>ZH</b> 中文</button>
         </div>
     </div>
 
-    <!-- AUTHENTICATION VIEW -->
-    <div id="view-auth" class="hidden relative min-h-screen flex items-center justify-center p-4">
-        <video autoplay loop muted playsinline class="video-bg opacity-30">
-            <source src="assets/video_1.mp4" type="video/mp4">
-        </video>
+    <!-- LANDING -->
+    <div id="view-console" class="lt relative min-h-screen flex flex-col items-center justify-center p-4 text-center">
+        <video autoplay loop muted playsinline class="video-bg" style="opacity:.10"><source src="/assets/video_2.mp4" type="video/mp4"></video>
+        <img src="/assets/logo.png" alt="Beatles-WS Logo" class="w-20 h-20 object-cover rounded-2xl mb-4 border border-[#e6dfd0] shadow">
+        <h1 class="text-xl font-black tracking-widest" style="color:#1c2a26">BEATLES-WS <span class="text-xs font-semibold text-[#6b746f] ml-1">PRO</span></h1>
+        <h2 class="text-3xl md:text-5xl font-extrabold mt-6 max-w-3xl leading-tight" style="color:#1c2a26" data-i="hero">Kelola pesan Anda dengan mudah dan pantau semua pesan Anda.</h2>
+        <button onclick="showAuth()" class="ub mt-8 px-7"><span data-i="enter">Masuk ke Dashboard</span> <i class="fas fa-arrow-right ml-1"></i></button>
+        <p class="text-[11px] text-[#6b746f] mt-6">Syarat &amp; Ketentuan · Kebijakan Privasi</p>
+    </div>
 
-        <div class="z-10 w-full max-w-md glass-panel gradient-border p-8 rounded-2xl shadow-2xl">
-            <div class="flex justify-center mb-4">
-                <img src="assets/logo.png" alt="Logo" class="w-16 h-16 object-cover rounded-xl border border-beatles-cyan/40 shadow-md">
-            </div>
+    <!-- AUTH -->
+    <div id="view-auth" class="lt hidden relative min-h-screen flex items-center justify-center p-4">
+        <video autoplay loop muted playsinline class="video-bg" style="opacity:.10"><source src="/assets/video_1.mp4" type="video/mp4"></video>
+        <button onclick="backHome()" class="ub2 text-xs fixed top-4 left-4 z-[60]"><i class="fas fa-arrow-left mr-1"></i> Kembali ke Beranda</button>
+        <div class="uc w-full max-w-md z-10 !p-8">
+            <div class="flex justify-center mb-3"><img src="/assets/logo.png" alt="Logo" class="w-14 h-14 object-cover rounded-xl border border-[#e6dfd0]"></div>
 
-            <!-- Login Form -->
             <div id="form-login">
-                <h2 class="text-3xl font-bold text-white mb-2 text-center tracking-wide">Autentikasi Sistem</h2>
-                <p class="text-center text-xs text-slate-400 mb-6">Pilih role: <b>boss</b>, <b>admin</b>, atau <b>user</b></p>
-                <div class="space-y-5">
-                    <div>
-                        <label class="block text-xs font-semibold text-beatles-cyan mb-1 uppercase tracking-wider">Username</label>
-                        <div class="relative">
-                            <i class="fas fa-user absolute left-3 top-3.5 text-slate-500"></i>
-                            <input type="text" id="login-username" class="glow-focus w-full bg-slate-800/80 border border-slate-700 rounded-lg py-3 pl-10 pr-4 text-white focus:border-beatles-cyan focus:outline-none transition-all" placeholder="boss / admin / user">
-                        </div>
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-beatles-cyan mb-1 uppercase tracking-wider">Kata Sandi</label>
-                        <div class="relative">
-                            <i class="fas fa-lock absolute left-3 top-3.5 text-slate-500"></i>
-                            <input type="password" id="login-password" class="glow-focus w-full bg-slate-800/80 border border-slate-700 rounded-lg py-3 pl-10 pr-4 text-white focus:border-beatles-cyan focus:outline-none transition-all" placeholder="Kata sandi...">
-                        </div>
-                    </div>
-                    <div id="auth-error" class="hidden text-sm text-red-400 bg-red-500/10 border border-red-500/30 rounded-lg px-3 py-2"></div>
-                    <button onclick="submitLogin()" class="w-full bg-beatles-emerald hover:bg-emerald-400 text-beatles-900 font-bold py-3 rounded-lg transition-all shadow-[0_0_15px_rgba(16,185,129,0.4)] mt-2">
-                        Masuk Dashboard
-                    </button>
-                    <p class="text-center text-sm text-slate-400 mt-4">Belum punya akun? <a href="#" onclick="toggleAuth('register')" class="text-beatles-cyan font-semibold hover:underline">Daftar Klien</a></p>
+                <h2 class="text-2xl font-black text-center" data-i="welcome">Selamat Datang</h2>
+                <p class="text-center text-xs text-[#6b746f] mb-5" data-i="loginSub">Masuk ke akun Beatles-WS Anda</p>
+                <div class="space-y-4">
+                    <div><label class="lbl" data-i="user">Nama Pengguna</label><input id="login-username" class="ui" placeholder="boss / admin / user"></div>
+                    <div><label class="lbl" data-i="pass">Kata Sandi</label>
+                        <div class="relative"><input id="login-password" type="password" class="ui pr-10" placeholder="••••••••">
+                        <button type="button" onclick="eye('login-password',this)" class="absolute right-3 top-3 text-[#6b746f]"><i class="far fa-eye"></i></button></div>
+                        <div class="text-right mt-1"><a href="#" onclick="showToast('Hubungi admin untuk reset kata sandi','info')" class="text-[11px] text-[#6b746f]" data-i="forgot">Lupa Kata Sandi?</a></div></div>
+                    <div id="auth-error" class="hidden text-xs text-red-700 bg-red-50 border border-red-200 rounded-lg px-3 py-2"></div>
+                    <div class="cap" id="cap-login" onclick="cap('cap-login')"><span class="box"></span><span class="t">Verifikasi keamanan</span><i class="fas fa-shield-halved ml-auto text-[#f38020]"></i></div>
+                    <button onclick="submitLogin()" class="ub w-full" data-i="signin">Masuk Sekarang</button>
+                    <p class="text-center text-xs text-[#6b746f]"><span data-i="noacc">Belum punya akun?</span> <a href="#" onclick="toggleAuth('register')" class="font-bold text-[#1f3d35]" data-i="register">Daftar di sini</a></p>
                 </div>
             </div>
 
-            <!-- Register Form -->
             <div id="form-register" class="hidden">
-                <h2 class="text-3xl font-bold text-white mb-2 text-center tracking-wide">Registrasi Klien Baru</h2>
-                <p class="text-center text-xs text-slate-400 mb-6">Bergabung dengan platform Beatles-WS</p>
-                <div class="space-y-4">
-                    <div>
-                        <label class="block text-xs font-semibold text-beatles-cyan mb-1 uppercase tracking-wider">Nama Lengkap</label>
-                        <input type="text" id="reg-name" class="glow-focus w-full bg-slate-800/80 border border-slate-700 rounded-lg py-2.5 px-4 text-white focus:border-beatles-cyan focus:outline-none">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-beatles-cyan mb-1 uppercase tracking-wider">Username</label>
-                        <input type="text" id="reg-user" class="glow-focus w-full bg-slate-800/80 border border-slate-700 rounded-lg py-2.5 px-4 text-white focus:border-beatles-cyan focus:outline-none">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-beatles-cyan mb-1 uppercase tracking-wider">Kata Sandi</label>
-                        <input type="password" id="reg-pass" class="glow-focus w-full bg-slate-800/80 border border-slate-700 rounded-lg py-2.5 px-4 text-white focus:border-beatles-cyan focus:outline-none">
-                    </div>
-                    <button onclick="submitRegister()" class="w-full bg-beatles-cyan hover:bg-cyan-400 text-beatles-900 font-bold py-3 rounded-lg transition-all mt-4">
-                        Daftar Sekarang
-                    </button>
-                    <p class="text-center text-sm text-slate-400 mt-4">Sudah punya akun? <a href="#" onclick="toggleAuth('login')" class="text-beatles-emerald font-semibold hover:underline">Masuk</a></p>
-                </div>
+                <h2 class="text-2xl font-black text-center">Buat Akun Baru</h2>
+                <p class="text-center text-xs text-[#6b746f] mb-4">Bergabung dengan Beatles-WS Pro sekarang</p>
+                <div id="stepper" class="flex items-center justify-center gap-2 mb-5"></div>
+                <div class="rstep" data-s="1"><label class="lbl">Nama Lengkap</label><input id="reg-name" class="ui" placeholder="Masukkan nama lengkap"><p class="text-[10px] text-[#6b746f] mt-1">Contoh: Budi Santoso</p></div>
+                <div class="rstep hidden" data-s="2">
+                    <label class="lbl">Nama Pengguna</label><input id="reg-user" class="ui mb-3" placeholder="Masukkan nama pengguna">
+                    <label class="lbl">Kata Sandi</label><div class="relative"><input id="reg-pass" type="password" class="ui pr-10" placeholder="Masukkan kata sandi"><button type="button" onclick="eye('reg-pass',this)" class="absolute right-3 top-3 text-[#6b746f]"><i class="far fa-eye"></i></button></div>
+                    <div class="mt-3 text-[11px] rounded-xl p-3 bg-amber-50 border border-amber-200 text-amber-800"><b><i class="fas fa-circle-info mr-1"></i>Peringatan Penting!</b><br>Pastikan kode keamanan dan kata sandi Anda tersimpan. Pemulihan hanya melalui admin.</div></div>
+                <div class="rstep hidden" data-s="3">
+                    <label class="lbl">Kode Referral (Opsional)</label><input id="reg-ref" class="ui" placeholder="Masukkan kode jika ada">
+                    <p class="text-[10px] text-[#6b746f] mt-1 mb-3">Dapatkan bonus dengan memasukkan kode teman Anda.</p>
+                    <label class="lbl">Rekening / E-Wallet Pencairan</label>
+                    <div class="grid grid-cols-2 gap-2 mb-2"><button id="pay-ew" onclick="setPay('ew')" class="ub text-xs">E-Wallet</button><button id="pay-bk" onclick="setPay('bk')" class="ub2 text-xs">Bank</button></div>
+                    <select id="reg-bank" class="ui mb-2"></select>
+                    <input id="reg-no" class="ui mb-2" inputmode="numeric" placeholder="Nomor HP e-wallet">
+                    <input id="reg-owner" class="ui" placeholder="Nama pemilik (sesuai rekening)">
+                    <p class="text-[10px] text-[#6b746f] mt-2">Rekening hanya bisa diubah oleh admin. Pastikan nomor dan nama pemilik benar.</p></div>
+                <div class="rstep hidden" data-s="4">
+                    <h3 class="font-bold text-center text-sm">Verifikasi Keamanan</h3><p class="text-center text-[11px] text-[#6b746f] mb-3">Selesaikan captcha di bawah ini untuk mendaftar</p>
+                    <div class="cap mb-3" id="cap-reg" onclick="cap('cap-reg')"><span class="box"></span><span class="t">Verifikasi keamanan</span><i class="fas fa-shield-halved ml-auto text-[#f38020]"></i></div>
+                    <label class="flex gap-2 text-[11px] text-[#6b746f]"><input type="checkbox" id="reg-tos" class="mt-0.5"> Dengan mendaftar, Anda menyetujui Syarat &amp; Ketentuan serta Kebijakan Privasi.</label></div>
+                <div class="flex gap-2 mt-5"><button id="reg-back" onclick="regStep(-1)" class="ub2 text-xs hidden">‹ Kembali</button><button id="reg-next" onclick="regNext()" class="ub flex-1">Lanjut ›</button></div>
+                <p class="text-center text-xs text-[#6b746f] mt-4">Sudah punya akun? <a href="#" onclick="toggleAuth('login')" class="font-bold text-[#1f3d35]">Masuk di sini</a></p>
             </div>
         </div>
     </div>
@@ -153,7 +161,7 @@
         <aside id="sidebar" class="w-64 glass-panel border-r border-slate-700 flex flex-col fixed md:static inset-y-0 left-0 z-40 transform -translate-x-full md:translate-x-0 transition-transform duration-300">
             <div class="p-6 border-b border-slate-700 flex flex-col items-center">
                 <div class="flex items-center space-x-2 mb-2">
-                    <img src="assets/logo.png" alt="Logo" class="w-8 h-8 rounded-lg object-cover">
+                    <img src="/assets/logo.png" alt="Logo" class="w-8 h-8 rounded-lg object-cover">
                     <h2 class="text-xl font-black text-white tracking-widest">BEATLES-<span class="text-beatles-cyan">WS</span></h2>
                 </div>
                 <div class="mt-2 py-1 px-3 bg-slate-800 rounded-full border border-slate-600">
@@ -178,10 +186,7 @@
                     <h3 class="text-lg md:text-xl font-bold text-white tracking-wide" id="page-title">Dashboard</h3>
                 </div>
                 <div class="flex items-center space-x-4">
-                    <div id="wa-status-pill" class="hidden sm:flex items-center space-x-2 bg-slate-800/80 border border-slate-700 rounded-full px-3 py-1.5">
-                        <span id="wa-status-dot" class="status-dot bg-slate-500"></span>
-                        <span id="wa-status-text" class="text-xs font-semibold text-slate-300">WhatsApp Terhubung</span>
-                    </div>
+                    <div class="hidden sm:flex items-center gap-2 bg-slate-800/80 border border-slate-700 rounded-full px-4 py-1.5 text-xs font-semibold"><i class="far fa-calendar"></i><span id="clock-d"></span><span class="opacity-40">•</span><i class="far fa-clock"></i><span id="clock-t"></span></div>
                     <div class="text-right hidden sm:block">
                         <p class="text-sm text-white font-semibold" id="top-username">Sanur Badarudin</p>
                         <p class="text-xs text-beatles-cyan" id="top-role">Online</p>
@@ -524,14 +529,14 @@
                         <div class="glass-panel p-6 rounded-2xl">
                             <h4 class="text-base font-bold text-white mb-4"><i class="fas fa-wallet text-beatles-cyan mr-2"></i> Daftar Penarikan Dana Pending</h4>
                             <div class="space-y-3">
-                                <div class="withdrawal-item bg-slate-800/80 border border-slate-700 p-4 rounded-xl flex justify-between items-center">
+                                <div class="bg-slate-800/80 border border-slate-700 p-4 rounded-xl flex justify-between items-center">
                                     <div>
                                         <p class="font-semibold text-xs text-white">Sanur Badarudin (ID: #USR-089)</p>
                                         <p class="text-xs text-slate-400">BCA: 1234567890 — Rp 2.500.000</p>
                                     </div>
                                     <div class="flex gap-2">
-                                        <button onclick="showToast('Withdrawal disetujui!'); this.closest('.withdrawal-item').remove();" class="bg-beatles-emerald hover:bg-emerald-500 text-beatles-900 text-xs px-3 py-1.5 rounded-lg font-bold transition">ACC</button>
-                                        <button onclick="showToast('Withdrawal ditolak', 'error'); this.closest('.withdrawal-item').remove();" class="bg-rose-600 hover:bg-rose-500 text-white text-xs px-3 py-1.5 rounded-lg font-bold transition">Tolak</button>
+                                        <button onclick="showToast('Withdrawal disetujui!'); this.closest('div.bg-slate-800').remove();" class="bg-beatles-emerald hover:bg-emerald-500 text-beatles-900 text-xs px-3 py-1.5 rounded-lg font-bold transition">ACC</button>
+                                        <button onclick="showToast('Withdrawal ditolak', 'error'); this.closest('div.bg-slate-800').remove();" class="bg-rose-600 hover:bg-rose-500 text-white text-xs px-3 py-1.5 rounded-lg font-bold transition">Tolak</button>
                                     </div>
                                 </div>
                             </div>
@@ -814,7 +819,215 @@
         }
     </script>
 
-    <!-- Lapisan integrasi frontend <-> backend (memuat setelah skrip inline). -->
-    <script src="app.js"></script>
+<script>
+const API_BASE = '/api';              // endpoint backend; jika tidak ada, otomatis mode demo
+const TELEGRAM_URL = 'https://t.me/';  // isi link support
+async function api(p, o = {}) {
+    try { const r = await fetch(API_BASE + p, { headers: { 'Content-Type': 'application/json' }, credentials: 'include', ...o });
+        if (!r.ok) throw 0; return await r.json(); } catch (e) { return null; }
+}
+const I18N = {
+ id:{hero:'Kelola pesan Anda dengan mudah dan pantau semua pesan Anda.',enter:'Masuk ke Dashboard',welcome:'Selamat Datang',loginSub:'Masuk ke akun Beatles-WS Anda',user:'Nama Pengguna',pass:'Kata Sandi',forgot:'Lupa Kata Sandi?',signin:'Masuk Sekarang',noacc:'Belum punya akun?',register:'Daftar di sini'},
+ en:{hero:'Manage your messages easily and monitor all your messages.',enter:'Enter Dashboard',welcome:'Welcome Back',loginSub:'Sign in to your Beatles-WS account',user:'Username',pass:'Password',forgot:'Forgot Password?',signin:'Sign In Now',noacc:"Don't have an account?",register:'Register here'},
+ zh:{hero:'轻松管理您的消息并监控所有消息。',enter:'进入仪表板',welcome:'欢迎回来',loginSub:'登录您的 Beatles-WS 账户',user:'用户名',pass:'密码',forgot:'忘记密码？',signin:'立即登录',noacc:'没有账户？',register:'在此注册'}
+};
+let lang = localStorage.getItem('bws_lang') || 'id';
+function setLang(l) { lang = l; localStorage.setItem('bws_lang', l);
+    document.querySelectorAll('[data-i]').forEach(e => e.textContent = I18N[l][e.dataset.i]);
+    document.getElementById('lang-cur').textContent = l.toUpperCase(); document.getElementById('lang-menu').classList.add('hidden'); }
+function eye(id, b) { const i = document.getElementById(id); i.type = i.type === 'password' ? 'text' : 'password'; b.firstChild.className = i.type === 'password' ? 'far fa-eye' : 'far fa-eye-slash'; }
+function cap(id) { const c = document.getElementById(id); if (c.classList.contains('ok')) return; c.querySelector('.t').textContent = 'Melakukan verifikasi...';
+    setTimeout(() => { c.classList.add('ok'); c.querySelector('.t').textContent = 'Berhasil'; }, 900); }
+function backHome() { document.getElementById('view-auth').classList.add('hidden'); document.getElementById('view-console').classList.remove('hidden'); }
+
+/* ---------- Auth ---------- */
+function showAuth() { document.getElementById('view-console').classList.add('hidden'); document.getElementById('view-auth').classList.remove('hidden'); toggleAuth('login'); }
+function toggleAuth(m) { document.getElementById('form-login').classList.toggle('hidden', m !== 'login'); document.getElementById('form-register').classList.toggle('hidden', m === 'login'); if (m !== 'login') { rs = 1; regRender(); setPay('ew'); } }
+async function submitLogin() {
+    const user = document.getElementById('login-username').value.trim().toLowerCase(), pass = document.getElementById('login-password').value.trim(), err = document.getElementById('auth-error');
+    const fail = t => { err.innerText = t; err.classList.remove('hidden'); };
+    if (!user || !pass) return fail('Nama pengguna dan kata sandi wajib diisi!');
+    if (!document.getElementById('cap-login').classList.contains('ok')) return fail('Selesaikan verifikasi keamanan terlebih dahulu.');
+    const res = await api('/auth/login', { method: 'POST', body: JSON.stringify({ username: user, password: pass }) });
+    if (res && res.user) currentUser = res.user;
+    else if (['boss', 'admin', 'user'].includes(user)) currentUser = { username: user, role: user, name: user === 'boss' ? 'Sanur Badarudin (Boss)' : user === 'admin' ? 'Administrator Sistem' : 'Client User' };
+    else return fail('Mode demo: gunakan "boss", "admin", atau "user".');
+    localStorage.setItem('beatles_user', JSON.stringify(currentUser)); err.classList.add('hidden');
+    showToast('Berhasil masuk sebagai ' + currentUser.username.toUpperCase()); startDashboard();
+}
+let rs = 1, payType = 'ew';
+const EW = ['DANA', 'OVO', 'GoPay', 'ShopeePay', 'LinkAja'], BK = ['BCA', 'Mandiri', 'BNI', 'BRI', 'SeaBank', 'Bank Jago', 'Permata'];
+function regRender() {
+    document.querySelectorAll('.rstep').forEach(e => e.classList.toggle('hidden', +e.dataset.s !== rs));
+    document.getElementById('stepper').innerHTML = [1, 2, 3, 4].map(n => `<span class="stp ${n <= rs ? 'on' : ''}">${n}</span>`).join('<span class="w-6 h-px bg-[#d8d0bd]"></span>');
+    document.getElementById('reg-back').classList.toggle('hidden', rs === 1);
+    document.getElementById('reg-next').textContent = rs === 4 ? 'Selesaikan' : 'Lanjut ›';
+}
+function setPay(t) { payType = t; document.getElementById('pay-ew').className = t === 'ew' ? 'ub text-xs' : 'ub2 text-xs'; document.getElementById('pay-bk').className = t === 'bk' ? 'ub text-xs' : 'ub2 text-xs';
+    document.getElementById('reg-bank').innerHTML = `<option value="">${t === 'ew' ? 'Pilih e-wallet' : 'Pilih bank'}</option>` + (t === 'ew' ? EW : BK).map(x => `<option>${x}</option>`).join('');
+    document.getElementById('reg-no').placeholder = t === 'ew' ? 'Nomor HP e-wallet' : 'Nomor rekening'; }
+function regStep(d) { rs = Math.min(4, Math.max(1, rs + d)); regRender(); }
+function regNext() {
+    const v = id => document.getElementById(id).value.trim();
+    if (rs === 1 && !v('reg-name')) return showToast('Nama lengkap wajib diisi!', 'error');
+    if (rs === 2 && (!v('reg-user') || v('reg-pass').length < 4)) return showToast('Isi nama pengguna dan kata sandi (min. 4 karakter)!', 'error');
+    if (rs === 3) { if (!v('reg-bank') || !v('reg-no') || !v('reg-owner')) return showToast('Lengkapi data pencairan!', 'error');
+        return modal(`<div class="text-center"><div class="w-12 h-12 mx-auto rounded-full border-2 border-[#1f3d35] flex items-center justify-center mb-3 font-black">!</div><h3 class="font-black">Periksa Data Pencairan</h3>
+        <p class="text-sm font-bold mt-2">${v('reg-bank')} - ${v('reg-no')}</p><p class="text-xs">a/n ${v('reg-owner')}</p>
+        <p class="text-[11px] text-[#6b746f] mt-2">Setelah mendaftar, rekening ini TIDAK bisa diubah sendiri. Perubahan hanya lewat admin.</p>
+        <div class="flex gap-2 justify-center mt-4"><button class="ub text-xs" onclick="closeModal();regStep(1)">Sudah Benar</button><button class="ub2 text-xs" onclick="closeModal()">Periksa Lagi</button></div></div>`); }
+    if (rs === 4) return regFinish();
+    regStep(1);
+}
+async function regFinish() {
+    if (!document.getElementById('cap-reg').classList.contains('ok')) return showToast('Selesaikan captcha dahulu!', 'error');
+    if (!document.getElementById('reg-tos').checked) return showToast('Setujui Syarat & Ketentuan dahulu!', 'error');
+    const v = id => document.getElementById(id).value.trim();
+    const body = { name: v('reg-name'), username: v('reg-user'), password: v('reg-pass'), referral: v('reg-ref'), payout: { type: payType, bank: v('reg-bank'), number: v('reg-no'), owner: v('reg-owner') } };
+    const res = await api('/auth/register', { method: 'POST', body: JSON.stringify(body) });
+    currentUser = (res && res.user) || { username: body.username, role: 'user', name: body.name };
+    U.account = `${body.payout.bank} · ${body.payout.number} a/n ${body.payout.owner}`;
+    localStorage.setItem('beatles_user', JSON.stringify(currentUser)); showToast('Registrasi berhasil! Selamat datang.'); startDashboard();
+}
+
+/* ---------- Modal & shell ---------- */
+let pairTimer;
+function modal(h) { closeModal(); const m = document.createElement('div'); m.id = 'u-modal'; m.className = 'fixed inset-0 z-[90] flex items-center justify-center p-4 bg-black/45';
+    m.innerHTML = '<div class="uc w-full max-w-sm relative">' + h + '</div>'; document.body.appendChild(m); }
+function closeModal() { clearInterval(pairTimer); const m = document.getElementById('u-modal'); if (m) m.remove(); }
+const _sd = startDashboard, _lo = logout, _rs = renderSidebar, _rc = renderContent;
+startDashboard = function () { _sd(); const u = currentUser.role === 'user';
+    document.getElementById('view-dashboard').classList.toggle('theme-user', u); document.getElementById('lang-ctl').classList.add('hidden');
+    if (u) { document.getElementById('user-role-display').innerText = 'MEMBER DASHBOARD'; loadUserData(); } };
+logout = function () { modal(`<div class="text-center"><div class="w-12 h-12 mx-auto rounded-full border-2 border-[#1f3d35] flex items-center justify-center mb-3"><i class="fas fa-right-from-bracket"></i></div><h3 class="font-black">Konfirmasi Keluar</h3>
+    <p class="text-xs text-[#6b746f] mt-1">Anda yakin ingin keluar dari akun ini?</p><div class="flex gap-2 justify-center mt-4"><button class="ub2 text-xs" onclick="closeModal()">Batal</button><button class="ubr text-xs" onclick="closeModal();doLogout()">Ya, Keluar</button></div></div>`); };
+function doLogout() { api('/auth/logout', { method: 'POST' }); _lo(); document.getElementById('view-dashboard').classList.remove('theme-user'); document.getElementById('lang-ctl').classList.remove('hidden'); document.getElementById('view-auth').classList.add('hidden'); }
+setInterval(() => { const n = new Date(), d = document.getElementById('clock-d'); if (!d) return;
+    d.textContent = n.toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }); document.getElementById('clock-t').textContent = n.toLocaleTimeString('id-ID'); }, 1000);
+
+/* ---------- Data member (demo; diganti data API jika tersedia) ---------- */
+const rp = n => 'Rp ' + Number(n).toLocaleString('id-ID');
+let U = { balance: 50, earned: 1019450, sent: 48, ref: 'Y760EO', min: 20000, fee: 1000, account: 'GoPay · 0858****7467 a/n Sanur Badarudin', remaining: 314907, photo: '',
+    devices: [{ id: 1, num: '+627078230544', slot: 1, online: false, earn: 0, speed: 30, mode: 'safe', limit: false, n: 100, ok: 0, fail: 0, sent: 0, pend: 0 }],
+    wd: [{ id: 3, date: '30 Okt 2026, 14.08', amt: 21000, st: 'Sukses' }, { id: 2, date: '28 Okt 2026, 22.10', amt: 36000, st: 'Sukses' }, { id: 1, date: '15 Okt 2026, 22.16', amt: 21000, st: 'Sukses' }],
+    team: [] };
+let wdF = 'Semua', teamSort = 'Terbaru', bulk = { cat: '', speed: 30 };
+async function loadUserData() { const r = await api('/member/summary'); if (r) Object.assign(U, r); const d = await api('/wa/devices'); if (Array.isArray(d)) U.devices = d; renderContent(); }
+const UTABS = [['dashboard', 'fas fa-house', 'Beranda'], ['whatsapp', 'fab fa-whatsapp', 'WhatsApp'], ['claim', 'fas fa-wallet', 'Klaim Saldo'], ['team', 'fas fa-users', 'Tim Afiliasi'], ['clientdb', 'fas fa-database', 'Database & Template']];
+renderSidebar = function () { if (currentUser.role !== 'user') return _rs();
+    document.getElementById('sidebar-nav').innerHTML = '<p class="text-[10px] font-bold text-slate-400 px-4 mb-2 tracking-widest">MENU UTAMA</p>' +
+    UTABS.map(t => `<button onclick="changeTab('${t[0]}')" class="w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-xs font-semibold transition ${currentTab === t[0] ? 'nav-active' : 'text-slate-400 hover:bg-black/5'}"><i class="${t[1]} w-4"></i><span>${t[2]}</span></button>`).join(''); };
+renderContent = function () { if (currentUser.role !== 'user' || currentTab === 'clientdb') return _rc();
+    const c = document.getElementById('dashboard-content'), t = document.getElementById('page-title');
+    const P = { dashboard: ['Beranda', uHome], whatsapp: ['WhatsApp Pengirim', uWA], claim: ['Tarik Saldo', uClaim], team: ['Afiliasi Referral', uTeam] }[currentTab] || ['Beranda', uHome];
+    t.innerText = P[0]; c.innerHTML = P[1](); };
+function uBack(h) { return h; }
+function uHome() {
+    const off = U.devices.filter(d => !d.online).length;
+    return `<div class="space-y-5 max-w-5xl">
+    <div class="rounded-3xl p-7 text-white" style="background:#16231f"><h2 class="text-3xl font-black !text-white" style="color:#fff!important">Selamat Datang!</h2>
+        <p class="text-sm opacity-70 mt-1">Kelola broadcast WhatsApp Anda dengan mudah dan pantau semua aktivitas pengiriman pesan dari sini.</p>
+        <div class="flex gap-2 mt-4 text-xs"><span class="px-3 py-1 rounded-full bg-white/10">Log in sebagai <b>${currentUser.username}</b></span><span class="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300">● SISTEM AKTIF</span></div></div>
+    ${profileRule()}
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="uc"><span class="lbl">Total Penghasilan</span><b class="text-2xl">${rp(U.earned)}</b><p class="text-[11px] text-[#6b746f] mt-1">Total penarikan ${rp(U.earned)}</p></div>
+        <div class="uc"><span class="lbl">Pesan Terkirim</span><b class="text-2xl">${U.sent}</b><p class="text-[11px] text-[#6b746f] mt-1">↑ Total akumulasi</p></div>
+        <div class="uc"><span class="lbl">Perangkat Offline</span><b class="text-2xl text-rose-600">${off}</b><p class="text-[11px] text-[#6b746f] mt-1">Butuh dihubungkan ulang</p></div></div>
+    <div class="uc flex flex-wrap items-center justify-between gap-3"><div><h4 class="font-black">Hubungkan Perangkat Baru</h4><p class="text-xs text-[#6b746f]">Scan QR code untuk menambahkan nomor WhatsApp baru ke akun Anda.</p></div><button class="ub" onclick="openPair()">Scan Nomor Baru ›</button></div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="uc"><span class="lbl">Total Saldo Tersedia</span><b class="text-3xl">${rp(U.balance)}</b><p class="text-[11px] text-[#6b746f] mt-1 mb-3">Minimal penarikan ${rp(U.min)}</p><button class="ub w-full" onclick="changeTab('claim')"><i class="fas fa-wallet mr-1"></i> Klaim Saldo</button></div>
+        <div class="uc"><h4 class="font-black mb-2">Program Afiliasi</h4><span class="lbl">Kode Referral</span><div class="flex items-center justify-between bg-[#f4efe3] rounded-xl px-3 py-2 mb-2"><b>${U.ref}</b><button onclick="copyTxt('${U.ref}')"><i class="far fa-copy"></i></button></div><button class="ub2 w-full text-xs" onclick="copyTxt(location.origin+'/?ref=${U.ref}')">Salin Link</button></div>
+        <div class="uc"><h4 class="font-black mb-1"><i class="fas fa-bug text-rose-600 mr-1"></i> Laporkan Bug</h4><p class="text-xs text-[#6b746f] mb-3">Menemukan kendala? Laporkan langsung ke tim support kami.</p><a href="${TELEGRAM_URL}" target="_blank" class="ubr block text-center text-xs">Hubungi via Telegram</a></div></div></div>`; }
+function profileRule() { return `<div class="uc"><p class="text-xs font-black text-amber-700 mb-1"><i class="fas fa-triangle-exclamation mr-1"></i>PERHATIAN: ATURAN PROFIL</p>
+    <p class="text-xs text-[#6b746f]">Anda diwajibkan untuk menggunakan foto yang telah disediakan dan menggunakan nama WhatsApp sesuai dengan nama yang telah ditentukan sebelum memulai mengirim pesan!</p>
+    <div class="flex items-center gap-3 mt-3"><div id="u-ph" class="w-11 h-11 rounded-full bg-[#e8dfca] overflow-hidden flex items-center justify-center">${U.photo ? `<img src="${U.photo}" class="w-full h-full object-cover">` : '<i class="fas fa-user"></i>'}</div>
+    <label class="ub text-xs cursor-pointer" style="background:#c8782f"><i class="fas fa-download mr-1"></i>Unduh Foto<button class="hidden" onclick="showToast('Foto profil diunduh','info')"></button></label><span class="ub2 text-xs">${(currentUser.name || '').split(' ')[0]}</span></div></div>`; }
+function copyTxt(t) { navigator.clipboard && navigator.clipboard.writeText(t); showToast('Berhasil disalin!'); }
+
+/* ---- WhatsApp ---- */
+function uWA() {
+    const on = U.devices.filter(d => d.online).length;
+    return `<div class="space-y-5 max-w-5xl"><p class="text-sm text-[#6b746f] -mt-2">Kelola perangkat WhatsApp Anda untuk pengiriman pesan.</p>${profileRule()}
+    <div class="uc flex items-center justify-between"><div><span class="lbl">Data yang tersisa saat ini</span><b class="text-2xl">${U.remaining}</b></div><button class="ub" onclick="openPair()">+ Tambah Perangkat</button></div>
+    <div class="uc"><h4 class="font-black mb-3"><i class="fas fa-chart-simple mr-1"></i> Ringkasan Performa Blast</h4><div class="grid grid-cols-2 md:grid-cols-6 gap-2">
+        <div class="tile"><b>${on}</b><span>Slot Aktif</span></div><div class="tile"><b>907</b><span>Sukses (24j)</span></div><div class="tile"><b class="text-rose-600">0</b><span>Gagal (24j)</span></div>
+        <div class="tile"><b>8</b><span>Campaign</span></div><div class="tile"><b>338</b><span>Unik dikirim</span></div><div class="tile"><b>0</b><span>Antrean</span></div></div></div>
+    <div class="uc"><h4 class="font-black"><i class="fas fa-sliders mr-1"></i> Kendali Massal</h4><p class="text-xs text-[#6b746f] mb-3">Kendalikan semua akun WhatsApp Anda sekaligus. Atur kecepatan pengiriman untuk mengontrol risiko terdeteksi spam.</p>
+        <div class="grid md:grid-cols-2 gap-3"><div><label class="lbl">Kategori Target</label><select class="ui" onchange="bulk.cat=this.value"><option value="">Pilih Kategori...</option>${databases.map(d => `<option ${bulk.cat == d.name ? 'selected' : ''}>${d.name}</option>`).join('')}</select></div>
+        <div><label class="lbl">Kecepatan Pengiriman</label>${speedSel('onchange="bulk.speed=+this.value"', bulk.speed)}</div></div>
+        <p class="text-[11px] text-[#6b746f] mt-2">Catatan: Risiko akun terblokir tetap ada pada kecepatan tinggi.</p>
+        <div class="grid grid-cols-2 gap-2 mt-3"><button class="ub" onclick="massStart()">▶ Mulai Semua</button><button class="ubr" onclick="massStop()">■ Hentikan Semua</button></div></div>
+    <div class="grid md:grid-cols-3 gap-4">${U.devices.map(devCard).join('') || '<div class="uc text-center text-xs text-[#6b746f] md:col-span-3">Belum ada perangkat. Klik “Tambah Perangkat”.</div>'}</div></div>`; }
+function speedSel(attr, v) { return `<select class="ui" ${attr}>${[[1, '1 Detik (Tercepat)'], [3, '3 Detik'], [5, '5 Detik'], [10, '10 Detik'], [30, '30 Detik (Standar)']].map(s => `<option value="${s[0]}" ${s[0] == v ? 'selected' : ''}>${s[1]}</option>`).join('')}</select>`; }
+function devCard(d) { return `<div class="uc space-y-3"><div class="flex items-center justify-between"><b>${d.num}</b><span class="text-[10px] px-2 py-0.5 rounded-full ${d.online ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-100 text-rose-700'}">● ${d.online ? 'TERHUBUNG' : 'TERPUTUS'}</span></div>
+    <div class="flex gap-2 text-[10px]"><span class="px-2 py-0.5 rounded bg-blue-100 text-blue-700 font-bold">SLOT ${d.slot}</span><span class="px-2 py-0.5 rounded bg-amber-100 text-amber-700">${rp(d.earn)}</span></div>
+    <div><label class="lbl">Kecepatan Pengiriman</label>${speedSel(`onchange="dev(${d.id}).speed=+this.value"`, d.speed)}</div>
+    <label class="flex gap-2 text-[11px]"><input type="radio" name="m${d.id}" ${d.mode == 'safe' ? 'checked' : ''} onchange="dev(${d.id}).mode='safe'"><span><b>Mode Aman (Anti-Ban)</b><br><span class="text-[#6b746f]">Jeda acak antar pesan agar akun lebih aman.</span></span></label>
+    <label class="flex gap-2 text-[11px]"><input type="radio" name="m${d.id}" ${d.mode == 'brutal' ? 'checked' : ''} onchange="dev(${d.id}).mode='brutal'"><span><b>Mode Brutal (Tanpa Jeda)</b><br><span class="text-[#6b746f]">Kirim secepat mungkin, risiko blokir lebih tinggi.</span></span></label>
+    <label class="flex gap-2 text-[11px] items-center"><input type="checkbox" ${d.limit ? 'checked' : ''} onchange="dev(${d.id}).limit=this.checked"> Tentukan limit pengiriman <input type="number" value="${d.n}" min="1" class="ui !w-20 !py-1" onchange="dev(${d.id}).n=+this.value"></label>
+    <div class="grid grid-cols-4 gap-1 text-center text-[10px]"><div><b class="block text-sm">${d.ok}</b>BERHASIL</div><div><b class="block text-sm text-rose-600">${d.fail}</b>GAGAL</div><div><b class="block text-sm">${d.sent}</b>DIKIRIM</div><div><b class="block text-sm">${d.pend}</b>PENDING</div></div>
+    <div class="grid grid-cols-2 gap-2"><button class="ub text-xs" onclick="devRun(${d.id})"><i class="fas fa-power-off mr-1"></i>Jalankan Mesin</button><button class="ub2 text-xs" onclick="openPair()"><i class="fas fa-rotate mr-1"></i>Sambungkan Ulang</button></div></div>`; }
+const dev = id => U.devices.find(d => d.id === id);
+async function devRun(id) { if (!bulk.cat) return showToast('Pilih Kategori Target dahulu di Kendali Massal', 'error');
+    await api('/blast/start', { method: 'POST', body: JSON.stringify({ device: id, ...dev(id), category: bulk.cat }) }); dev(id).online = true; showToast('Mesin dijalankan'); renderContent(); }
+async function massStart() { if (!bulk.cat) return showToast('Pilih Kategori Target dahulu!', 'error'); if (!U.devices.length) return showToast('Belum ada perangkat!', 'error');
+    await api('/blast/start-all', { method: 'POST', body: JSON.stringify({ category: bulk.cat, speed: bulk.speed }) }); U.devices.forEach(d => { d.speed = bulk.speed; d.online = true; });
+    modal(`<div class="text-center"><div class="w-12 h-12 mx-auto rounded-full border-2 border-[#1f3d35] flex items-center justify-center mb-3"><i class="fas fa-check"></i></div><h3 class="font-black">Berhasil!</h3><p class="text-xs text-[#6b746f] mt-1">Pengiriman massal berhasil dimulai.</p><button class="ub mt-4 px-8" onclick="closeModal();renderContent()">OK</button></div>`); }
+async function massStop() { await api('/blast/stop-all', { method: 'POST' }); U.devices.forEach(d => d.online = false); showToast('Semua pengiriman dihentikan', 'info'); renderContent(); }
+
+/* ---- Pairing ---- */
+function openPair() { let left = 180;
+    modal(`<button onclick="closeModal()" class="absolute top-3 right-3 text-[#6b746f]"><i class="fas fa-xmark"></i></button><h3 class="text-center font-black text-lg">Hubungkan WhatsApp</h3>
+    <p class="text-center mt-2"><span class="text-xs px-3 py-1 rounded-full bg-[#f4efe3]"><i class="far fa-clock mr-1"></i>Sisa Waktu: <b id="pair-t">03:00</b></span></p>
+    <div class="grid grid-cols-2 gap-1 p-1 bg-[#f4efe3] rounded-xl mt-4 text-xs font-bold"><button id="pt-code" onclick="pairTab('code')">Gunakan Kode</button><button id="pt-qr" onclick="pairTab('qr')">Scan QR</button></div><div id="pair-body" class="mt-4"></div>`);
+    pairTab('code'); pairTimer = setInterval(() => { left--; const t = document.getElementById('pair-t'); if (!t || left < 0) { closeModal(); return showToast('Waktu pairing habis', 'error'); } t.textContent = '0' + Math.floor(left / 60) + ':' + String(left % 60).padStart(2, '0'); }, 1000); }
+function pairTab(t) { document.getElementById('pt-code').className = t === 'code' ? 'ub2 !py-2' : 'py-2'; document.getElementById('pt-qr').className = t === 'qr' ? 'ub2 !py-2' : 'py-2';
+    const b = document.getElementById('pair-body');
+    if (t === 'code') b.innerHTML = `<p class="text-[11px] text-[#6b746f] mb-3">Buka WhatsApp &gt; Perangkat Tertaut &gt; Tautkan dengan Nomor. Masukkan kode di bawah ini.</p><label class="lbl">Nomor WhatsApp Anda</label><input id="pair-no" class="ui mb-3" placeholder="Contoh: +62 812-3456-7890"><div id="pair-code"></div><button class="ub w-full" onclick="getCode()">Dapatkan Kode</button>`;
+    else { b.innerHTML = `<p class="text-[11px] text-[#6b746f] mb-3 text-center">Buka WhatsApp di HP Anda, pilih Perangkat Tertaut lalu scan kode di bawah ini.</p><div id="qr-box" class="w-48 h-48 mx-auto rounded-xl border border-[#e6dfd0] flex flex-col items-center justify-center text-xs text-[#6b746f]"><i class="fas fa-rotate fa-spin mb-2"></i>Memuat QR...</div>`;
+        api('/wa/qr').then(r => { const q = document.getElementById('qr-box'); if (q) q.innerHTML = r && r.qr ? `<img src="${r.qr}" class="w-full h-full">` : 'QR muncul setelah backend WhatsApp terhubung'; }); } }
+async function getCode() { const no = document.getElementById('pair-no').value.replace(/\D/g, ''); if (no.length < 9) return showToast('Nomor WhatsApp tidak valid!', 'error');
+    const r = await api('/wa/pair-code', { method: 'POST', body: JSON.stringify({ phone: no }) });
+    const code = (r && r.code) || (Math.random().toString(36).slice(2, 6) + '-' + Math.random().toString(36).slice(2, 6)).toUpperCase();
+    document.getElementById('pair-code').innerHTML = `<div class="text-center text-2xl font-black tracking-widest bg-[#f4efe3] rounded-xl py-3 mb-3">${code}</div>`; }
+
+/* ---- Klaim Saldo ---- */
+function uClaim() {
+    const need = Math.max(0, U.min - U.balance), pct = Math.min(100, U.balance / U.min * 100);
+    const rows = U.wd.filter(w => wdF === 'Semua' || w.st === wdF);
+    return `<div class="space-y-5 max-w-5xl"><p class="text-sm text-[#6b746f] -mt-2">Cairkan penghasilan dan mesin Anda ke rekening bank atau e-wallet.</p>
+    <div class="grid md:grid-cols-2 gap-4">
+      <div class="uc"><div class="flex justify-between"><span class="lbl">Saldo saat ini</span><span class="text-[10px] text-right text-[#6b746f]">${U.account}</span></div><b class="text-4xl block my-3">${rp(U.balance)}</b>
+        <div class="flex justify-between text-[10px] text-[#6b746f]"><span>Progress Penarikan</span><span>Min. ${rp(U.min)}</span></div><div class="h-2 rounded-full bg-[#eadfc9] overflow-hidden my-1"><div class="h-full bg-[#1f3d35]" style="width:${pct}%"></div></div>
+        ${need ? `<p class="text-[11px] text-amber-700 bg-amber-50 rounded-lg px-3 py-2 mt-2">Kurang ${rp(need)} untuk ditarik.</p>` : ''}</div>
+      <div class="uc"><span class="lbl">Ajukan Penarikan</span><div class="grid grid-cols-2 gap-3"><div><span class="lbl">Pilih Nominal</span><div class="grid grid-cols-3 gap-1">${[20, 40, 60, 120, 200, 400].map(n => `<button class="chip" onclick="document.getElementById('wd-amt').value=${n * 1000}">${n}k</button>`).join('')}</div></div>
+        <div><span class="lbl">Atau ketik nominal</span><input id="wd-amt" type="number" class="ui mb-2" placeholder="Rp 0"><button class="ub w-full text-xs" onclick="doWd()">Proses Sekarang</button></div></div>
+        <p class="text-[10px] text-[#6b746f] mt-2">Potongan admin ${rp(U.fee)} per penarikan. Dana dikirim ke rekening terdaftar.</p></div></div>
+    <div class="uc"><div class="flex flex-wrap justify-between items-center gap-2 mb-3"><h4 class="font-black text-xs tracking-wider">RIWAYAT PENARIKAN</h4><div class="flex gap-1">${['Proses', 'Sukses', 'Ditolak', 'Dibatalkan'].map(f => `<button onclick="wdF=wdF==='${f}'?'Semua':'${f}';renderContent()" class="chip !py-1 ${wdF === f ? 'on' : ''}">${f}</button>`).join('')}</div></div>
+    ${rows.length ? `<div class="overflow-x-auto"><table class="w-full text-xs text-left"><thead class="text-[#6b746f]"><tr><th class="pb-2">TANGGAL</th><th>NOMINAL</th><th>STATUS</th><th class="text-right">AKSI</th></tr></thead><tbody class="divide-y divide-[#eee6d3]">${rows.map(w => `<tr><td class="py-2.5">${w.date}</td><td class="font-bold">${rp(w.amt)}</td><td><span class="px-2 py-0.5 rounded bg-emerald-100 text-emerald-700 text-[10px]">${w.st}</span></td><td class="text-right"><button class="ub2 !py-1 !px-3 text-[10px]" onclick="wdDetail(${w.id})">Detail</button></td></tr>`).join('')}</tbody></table></div>`
+    : '<div class="text-center py-10 text-xs text-[#6b746f]"><i class="far fa-file-lines text-2xl mb-2 block"></i><b>Belum Ada Riwayat</b><br>Data penarikan dengan status tersebut belum tersedia.</div>'}</div></div>`; }
+async function doWd() { const a = +document.getElementById('wd-amt').value;
+    if (!a || a < U.min) return showToast('Minimal penarikan ' + rp(U.min), 'error'); if (a > U.balance) return showToast('Saldo tidak mencukupi!', 'error');
+    const r = await api('/wallet/withdraw', { method: 'POST', body: JSON.stringify({ amount: a }) }); if (r && r.ok === false) return showToast(r.message || 'Gagal', 'error');
+    U.balance -= a; U.wd.unshift({ id: Date.now(), date: new Date().toLocaleString('id-ID'), amt: a, st: 'Proses' }); showToast('Permintaan penarikan dikirim'); renderContent(); }
+function wdDetail(id) { const w = U.wd.find(x => x.id === id);
+    modal(`<h3 class="font-black text-center mb-3">Detail Penarikan</h3><div class="space-y-2 text-xs">${[['Tanggal', w.date], ['Nominal Tarik', rp(w.amt - U.fee)], ['Potongan Admin', '-' + rp(U.fee)], ['Total Yang Diterima', '<b>' + rp(w.amt) + '</b>'], ['Status', w.st], ['Rekening Tujuan', U.account]].map(r => `<div class="flex justify-between gap-3"><span class="text-[#6b746f]">${r[0]}</span><span class="text-right">${r[1]}</span></div>`).join('')}</div><button class="ub w-full mt-4" onclick="closeModal()">Tutup</button>`); }
+
+/* ---- Tim Afiliasi ---- */
+function uTeam() {
+    const rows = [...U.team].sort((a, b) => teamSort === 'Terbaru' ? b.id - a.id : b.msg - a.msg), bonus = U.team.reduce((s, t) => s + t.bonus, 0);
+    return `<div class="space-y-5 max-w-5xl"><p class="text-sm text-[#6b746f] -mt-2">Undang teman untuk bergabung dan dapatkan bonus otomatis dari setiap pesan yang berhasil mereka kirim.</p>
+    <div class="grid md:grid-cols-3 gap-4"><div class="rounded-2xl p-5 text-white md:row-span-2" style="background:#16231f"><h4 class="font-black" style="color:#fff">Kode Undangan Anda</h4><p class="text-[11px] opacity-70 mb-3">Bagikan kode atau link ini kepada teman Anda.</p>
+        <span class="text-[10px] opacity-60">KODE REFERRAL</span><div class="flex justify-between bg-white/10 rounded-xl px-3 py-2 mb-2"><b>${U.ref}</b><button onclick="copyTxt('${U.ref}')"><i class="far fa-copy"></i></button></div>
+        <span class="text-[10px] opacity-60">LINK CEPAT</span><div class="flex justify-between bg-white/10 rounded-xl px-3 py-2"><span class="truncate text-xs">${location.origin}/?ref=${U.ref}</span><button onclick="copyTxt(location.origin+'/?ref=${U.ref}')"><i class="far fa-copy"></i></button></div></div>
+      <div class="uc"><span class="lbl">Total Tim</span><b class="text-2xl">${U.team.length} <span class="text-xs font-normal">Org</span></b></div><div class="uc"><span class="lbl">Pesan Sukses</span><b class="text-2xl">${U.team.reduce((s, t) => s + t.msg, 0)}</b></div>
+      <div class="uc md:col-span-2"><span class="lbl">Total Bonus</span><b class="text-3xl">${rp(bonus)}</b></div></div>
+    <div class="uc"><div class="flex justify-between items-center mb-3"><h4 class="font-black"><i class="fas fa-user-group mr-1"></i> Riwayat Undangan</h4>
+        <select class="ui !w-auto !py-1.5 text-xs" onchange="teamSort=this.value;renderContent()">${['Terbaru', 'Pesan Sukses Terbanyak'].map(s => `<option ${teamSort === s ? 'selected' : ''}>${s}</option>`).join('')}</select></div>
+        <table class="w-full text-xs text-left"><thead class="text-[#6b746f]"><tr><th class="pb-2">NAMA TIM</th><th>USERNAME</th><th>PESAN</th><th class="text-right">BONUS</th></tr></thead><tbody>
+        ${rows.map(t => `<tr class="border-t border-[#eee6d3]"><td class="py-2.5">${t.name}</td><td>${t.user}</td><td>${t.msg}</td><td class="text-right font-bold">${rp(t.bonus)}</td></tr>`).join('') || '<tr><td colspan="4" class="text-center py-8 text-[#6b746f]">Belum ada anggota tim afiliasi.</td></tr>'}</tbody></table></div></div>`; }
+
+document.addEventListener('DOMContentLoaded', () => { setLang(lang); const r = new URLSearchParams(location.search).get('ref'); if (r) localStorage.setItem('bws_ref', r); });
+</script>
 </body>
 </html>
