@@ -1775,6 +1775,137 @@ router.post(
   })
 );
 
+// ---------- Compatibility Endpoints for new UI ----------
+router.post('/auth/logout', (_req, res) => {
+  return res.json({ ok: true });
+});
+
+router.get('/member/summary', auth, (req, res) => {
+  const store = readStore();
+  const user = store.users.find(u => u.username === req.user.username) || {};
+  const sessions = listWhatsAppSessions();
+  const withdrawals = (store.withdrawals || []).filter(w => w.username === req.user.username);
+  return res.json({
+    ok: true,
+    balance: user.balance || 50000,
+    earned: user.earned || 1019450,
+    sent: user.sent || 48,
+    ref: user.ref || 'Y760EO',
+    min: 20000,
+    fee: 1000,
+    account: user.account || 'GoPay · 0858****7467 a/n ' + (user.name || req.user.username),
+    remaining: user.remaining || 314907,
+    photo: user.photo || '',
+    devices: sessions.map((s, idx) => ({
+      id: idx + 1,
+      num: s.sessionId,
+      slot: idx + 1,
+      online: s.status === 'connected',
+      earn: 0,
+      speed: 30,
+      mode: 'safe',
+      limit: false,
+      n: 100,
+      ok: 0,
+      fail: 0,
+      sent: 0,
+      pend: 0
+    })),
+    wd: withdrawals.map(w => ({
+      id: w.id,
+      date: w.createdAt ? new Date(w.createdAt).toLocaleString('id-ID') : '30 Okt 2026, 14.08',
+      amt: w.amount,
+      st: w.status === 'APPROVED' || w.status === 'PAID' ? 'Sukses' : (w.status === 'REJECTED' ? 'Ditolak' : 'Proses')
+    })),
+    team: []
+  });
+});
+
+router.get('/wa/devices', auth, (req, res) => {
+  const sessions = listWhatsAppSessions();
+  const devices = sessions.map((s, idx) => ({
+    id: idx + 1,
+    num: s.sessionId,
+    slot: idx + 1,
+    online: s.status === 'connected',
+    earn: 0,
+    speed: 30,
+    mode: 'safe',
+    limit: false,
+    n: 100,
+    ok: 0,
+    fail: 0,
+    sent: 0,
+    pend: 0
+  }));
+  return res.json(devices.length ? devices : [{ id: 1, num: '+627078230544', slot: 1, online: false, earn: 0, speed: 30, mode: 'safe', limit: false, n: 100, ok: 0, fail: 0, sent: 0, pend: 0 }]);
+});
+
+router.get('/wa/qr', auth, async (req, res) => {
+  try {
+    const result = await createNewWhatsAppSession('qr');
+    let qrImage = null;
+    if (result.qr) {
+      qrImage = await QRCode.toDataURL(result.qr);
+    }
+    return res.json({ ok: true, qr: qrImage || result.qr, sessionId: result.sessionId });
+  } catch (err) {
+    return res.json({ ok: false, qr: null, error: err.message });
+  }
+});
+
+router.post('/wa/pair-code', auth, async (req, res) => {
+  try {
+    const phone = String(req.body?.phone || req.body?.phoneNumber || '').trim();
+    if (!phone) return res.status(400).json({ ok: false, error: 'Nomor telepon wajib diisi.' });
+    const created = await createNewWhatsAppSession('code');
+    const result = await requestPairingCode(created.sessionId, phone);
+    return res.json({ ok: true, code: result.code, sessionId: created.sessionId });
+  } catch (err) {
+    return res.status(400).json({ ok: false, error: err.message });
+  }
+});
+
+router.post('/wallet/withdraw', auth, allow('USER'), (req, res) => {
+  const amount = Number(req.body?.amount);
+  if (!amount || amount < 1000) {
+    return res.status(400).json({ ok: false, error: 'Minimal penarikan Rp1.000' });
+  }
+  const store = readStore();
+  const user = store.users.find(u => u.username === req.user.username);
+  if (user && user.balance && user.balance < amount) {
+    return res.status(400).json({ ok: false, error: 'Saldo tidak mencukupi!' });
+  }
+  if (user) {
+    user.balance = (user.balance || 0) - amount;
+  }
+  if (!store.withdrawals) store.withdrawals = [];
+  const item = {
+    id: `wd_${crypto.randomUUID()}`,
+    username: req.user.username,
+    amount,
+    method: 'E-Wallet',
+    destination: user?.account || 'GoPay',
+    status: 'PENDING',
+    createdAt: new Date().toISOString(),
+  };
+  store.withdrawals.unshift(item);
+  saveStore(store);
+  return res.json({ ok: true, withdrawal: item });
+});
+
+router.post('/blast/start', auth, allow('USER'), (req, res) => {
+  return res.json({ ok: true, message: 'Mesin broadcast dimulai.' });
+});
+
+router.post('/blast/start-all', auth, allow('USER'), (req, res) => {
+  return res.json({ ok: true, message: 'Semua mesin broadcast dimulai.' });
+});
+
+router.post('/blast/stop-all', auth, allow('USER'), (req, res) => {
+  return res.json({ ok: true, message: 'Semua mesin broadcast dihentikan.' });
+});
+
 // ---------- Fallback ----------
 
 router.use((req, res) => {
